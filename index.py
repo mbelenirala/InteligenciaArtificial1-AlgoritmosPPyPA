@@ -4,6 +4,7 @@ import screeninfo
 import tkinter.font as tkFont
 from Genlab import *
 
+#POR EL MOMENTO ESTO NO SE OCUPA.. ASI QUE NO EJECUTES JEJ 
 
 def imprimir():
     label_saludo.configure(text="¡Hola, mundo!")

@@ -5,41 +5,40 @@ from PIL import Image
 from modelo import *
 
 
-
-
-def PrimeroAmplitud(matriz):
+def primeroAmplitud(matriz):
     inicio = nodo(9, 9)
-    final = nodo(0, 0)
-    visitados = []
-    por_visitar = []
+    fin = nodo(0, 0)
     arbolBusqueda = []
-    por_visitar.append(inicio)  #se asigna el inicio
-
-    while por_visitar:
-        #Siguiente nodo a visitar y su camino
-        nodoActual = por_visitar.pop(0) 
-        
-        # Splo se visita el nodo si no fue visitado antes
+    visitados = []
+    porVisitar = []
+    tiempo = 0
+    porVisitar.append(arbol(inicio, inicio, tiempo))
+    Comienzo = False
+    while porVisitar:
+        tiempo += 1
+        caminoAux = porVisitar.pop(0)
+        porVisitar = eliminarNodosDuplicados(porVisitar)
+        nodoActual = caminoAux.hijo
         if nodoActual not in visitados:
+            vecinos = []
+            if Comienzo:
+                arbolBusqueda.append(caminoAux)
+            if nodoActual == fin:
+                camino = [nodoActual]
+                while nodoActual != inicio:
+                    for caminoEnArbol in arbolBusqueda:
+                        if caminoEnArbol.hijo == nodoActual:
+                            nodoActual = caminoEnArbol.padre
+                            camino.insert(0, nodoActual)
+                return arbolBusqueda, camino
             visitados.append(nodoActual)
+            vecinos = movimientos(nodoActual, matriz)
+            for nodo_hijo in vecinos:
+                if nodo_hijo not in visitados:
+                    porVisitar.append(arbol(nodoActual, nodo_hijo, tiempo))
+        Comienzo=True
 
-            #Si es la salida se retorna 
-            if nodoActual == final:
-                return arbolBusqueda
-
-            #Expandimos el nodo
-            movimientosPosibles = movimientos(nodoActual, matriz)
-
-            # Recorremos los movimientos posibles
-            for movimiento in movimientosPosibles:
-                #Si ya no fue recorrido el nodo del movimiento
-                if movimiento not in visitados:
-                    por_visitar.append(movimiento)
-                    arbolBusqueda.append(arbol(nodoActual,movimiento))
-    
-    #En caso que el laberinto no tenga salida valida
-    return None
-
+		
 
 
 def movimientos(nodoActual, matriz):
@@ -66,4 +65,15 @@ def movimientos(nodoActual, matriz):
 
     return expandir_nodo
 
+
+def eliminarNodosDuplicados (porVisitar):
+	por_visitar = []
+	nodoProcesados = []
+    
+	for nodoActual in porVisitar:
+		if nodoActual.hijo not in nodoProcesados:
+			por_visitar.append(nodoActual)
+			nodoProcesados.append(nodoActual.hijo)
+    
+	return por_visitar
 
