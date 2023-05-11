@@ -4,9 +4,9 @@ class nodo :
         self.fila = fila
         self.columna = columna
 
-    def __eq__(actual, nodo2):
+    def __eq__(self, nodo2):
         if isinstance(nodo2, nodo):
-            return actual.fila == nodo2.fila and actual.columna == nodo2.columna
+            return self.fila == nodo2.fila and self.columna == nodo2.columna
         return False
 
     def __str__(self):
