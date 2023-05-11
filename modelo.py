@@ -9,9 +9,11 @@ class nodo :
             return actual.fila == nodo2.fila and actual.columna == nodo2.columna
         return False
 
+    def __str__(self):
+        return f"({self.fila}, {self.columna})"
  
 class arbol: 
-    def __init__(self, padre, hijo, tiempo):
+    def __init__(self, padre, hijo):
         self.padre = padre
         self.hijo = hijo
-        self.tiempo = tiempo
+

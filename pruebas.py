@@ -1,8 +1,12 @@
 from Genlab import *
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageTk
+import tkinter as tk
+import screeninfo
+from ventanaPA import *
 
 #ACA ESTOY PROBANDO COMO MOSTRAR EL LABERINTO EN UNA IMAGEN, FIJATE SI TE GUSTA ASI 
 # O SINO PONE OTRA IDEA PORQUE SOLO SE ME OCURRIO ESTA :c
+
 
 def mostrar_matriz(matriz):
     size = (len(matriz[0])*40, len(matriz)*40)
@@ -21,11 +25,78 @@ def mostrar_matriz(matriz):
                 draw.text((j*cuadro_size, i*cuadro_size), 'F', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
             elif matriz[i][j] == 'I':
                 draw.text((j*cuadro_size, i*cuadro_size), 'I', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
-    # Muestra la imagen
-    imagen.show()
+    # Guarda la imagen como un archivo temporal
+    imagen.save("temp.png")
+
 
 matriz = generateMaze()
 height = 10
 width = 10
 printMaze(matriz,height,width)
 mostrar_matriz(matriz)
+
+# Crea una ventana con un botón para generar solución
+ventana = tk.Tk()
+ventana.title("Generar Solución")
+screen = screeninfo.get_monitors()[0]
+width, height = screen.width, screen.height
+
+# Establecer las dimensiones de la ventana principal
+ventana.geometry("%dx%d" % (width, height))
+ventana.title("Inteligencia Artificial 1")
+
+# Carga la imagen en un objeto PhotoImage de Tkinter
+imagen = ImageTk.PhotoImage(Image.open("temp.png"))
+
+# Crea un widget Label para mostrar la imagen
+label_imagen = tk.Label(ventana, image=imagen)
+label_imagen.pack(pady=100)
+
+# Define la función que se llamará cuando se presione el botón
+def nuevoLaberinto():
+    print("Generando nuevo laberinto...")
+    # Generar la nueva matriz
+    global matriz 
+    matriz = generateMaze()
+    # Mostrar la nueva matriz en una imagen y guardarla en un archivo temporal
+    mostrar_matriz(matriz)
+    # Actualizar el objeto PhotoImage con la nueva imagen
+    imagen = ImageTk.PhotoImage(Image.open("temp.png"))
+    label_imagen.configure(image=imagen)
+    label_imagen.image = imagen  # Esto es necesario para evitar errores de garbage collection
+
+
+
+# Crea un widget Button para generar la solución
+boton_generar = tk.Button(ventana, text="Generar nuevo laberinto", command=nuevoLaberinto)
+boton_generar.pack()
+
+def mostrarArbol():
+    global matriz
+    mostrar_arbol(matriz)
+
+def mostrar_Pasos():
+    global matriz
+    mostrarPasos(matriz)
+
+
+# Crea el botón "Mostrar árbol" y lo añade a la ventana
+boton_mostrar = tk.Button(ventana, text="Mostrar árbol", command=mostrarArbol)
+boton_mostrar.pack(padx=10, pady=10)
+
+boton_mostrarPasos = tk.Button(ventana, text="Mostrar pasos", command=mostrar_Pasos)
+boton_mostrarPasos.pack(padx=10, pady=10)
+
+
+def eliminar_imagen():
+    if os.path.exists("imgPrimeroAmplitud.png"):
+        os.remove("imgPrimeroAmplitud.png")
+    if os.path.exists("temp.png"):
+        os.remove("temp.png")
+    ventana.destroy()
+
+# Vincular la función eliminar_imagen a la señal de cierre de la ventana principal
+ventana.protocol("WM_DELETE_WINDOW", eliminar_imagen)
+
+# Inicia el loop de eventos de Tkinter
+ventana.mainloop()
