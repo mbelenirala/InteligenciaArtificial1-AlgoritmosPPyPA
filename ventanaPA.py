@@ -6,17 +6,13 @@ import screeninfo
 import os
 
 # Define la función para generar el laberinto y el árbol
-def generar_laberinto_y_arbol():
-   matriz = generateMaze()
-   height = 10
-   width = 10
-   printMaze(matriz,height,width)
-   arbolBusqueda, por_visitar= primeroAmplitud(matriz)
+def generar_laberinto_y_arbol(matriz):
+   arbolBusqueda, por_visitar, texto= primeroAmplitud(matriz)
    cont = 0
-   for e in arbolBusqueda:
-                    print("TIEMPO: ",e.tiempo,"Nodo:",e.padre.fila,e.padre.columna) #ESTO NO ANDA COMO DEBERIA :c
-                    cont = cont+1
-   return arbolBusqueda, por_visitar
+   #for e in arbolBusqueda:
+    #                print("TIEMPO: ",cont,"Nodo:",e.padre.fila,e.padre.columna) #ESTO NO ANDA COMO DEBERIA :c
+     #               cont = cont+1
+   return arbolBusqueda, por_visitar, texto
 
 def generarArbol(arbolBusqueda, por_visitar):
     g = Graph(engine='sfdp')
@@ -35,8 +31,8 @@ def generarArbol(arbolBusqueda, por_visitar):
     g.render('imgPrimeroAmplitud')
 
 
-def mostrar_arbol():
-     arbolBusqueda, por_visitar = generar_laberinto_y_arbol()
+def mostrar_arbol(matriz):
+     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz)
      generarArbol(arbolBusqueda, por_visitar)
      nombre_archivo = 'imgPrimeroAmplitud.png'
 
@@ -63,27 +59,18 @@ def mostrar_arbol():
      panel.image = img
      panel.pack()
 
+def mostrarPasos(matriz):
+    arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz)
+    ventana = Tk()
+    ventana.title("Texto")
+    
+    # Crear un widget de Texto
+    widget_texto = Text(ventana, height=30, width=50)
+    widget_texto.pack()
 
-# Crear la ventana principal
-root = tk.Tk()
-screen = screeninfo.get_monitors()[0]
-width, height = screen.width, screen.height
+    # Agregar el contenido de la variable texto al widget de Texto
+    for linea in texto:
+        widget_texto.insert("end", linea + "\n")
 
-# Establecer las dimensiones de la ventana principal
-root.geometry("%dx%d" % (width, height))
-root.title("Inteligencia Artificial 1")
+    ventana.mainloop()
 
-# Crea el botón "Mostrar árbol" y lo añade a la ventana
-boton_mostrar = tk.Button(root, text="Mostrar árbol", command=mostrar_arbol)
-boton_mostrar.pack(padx=10, pady=10)
-
-# Definir una función para eliminar el archivo de imagen
-def eliminar_imagen():
-    if os.path.exists("imgPrimeroAmplitud.png"):
-        os.remove("imgPrimeroAmplitud.png")
-    root.destroy()
-
-# Vincular la función eliminar_imagen a la señal de cierre de la ventana principal
-root.protocol("WM_DELETE_WINDOW", eliminar_imagen)
-
-root.mainloop()
