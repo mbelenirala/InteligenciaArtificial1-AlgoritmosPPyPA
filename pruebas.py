@@ -71,26 +71,34 @@ def nuevoLaberinto():
 boton_generar = tk.Button(ventana, text="Generar nuevo laberinto", command=nuevoLaberinto)
 boton_generar.pack()
 
-def mostrarArbol():
+def mostrarArbol(alg):
     global matriz
-    mostrar_arbol(matriz)
+    mostrar_arbol(matriz,alg)
 
-def mostrar_Pasos():
+def mostrar_Pasos(alg):
     global matriz
-    mostrarPasos(matriz)
+    mostrarPasos(matriz,alg)
 
 
-# Crea el botón "Mostrar árbol" y lo añade a la ventana
-boton_mostrar = tk.Button(ventana, text="Mostrar árbol", command=mostrarArbol)
+# Crea el botón "Mostrar árbol PA" y lo añade a la ventana
+boton_mostrar = tk.Button(ventana, text="Mostrar árbol PA", command=lambda: mostrarArbol(0))
 boton_mostrar.pack(padx=10, pady=10)
 
-boton_mostrarPasos = tk.Button(ventana, text="Mostrar pasos", command=mostrar_Pasos)
+boton_mostrarPasos = tk.Button(ventana, text="Mostrar pasos PA", command=lambda: mostrar_Pasos(0))
 boton_mostrarPasos.pack(padx=10, pady=10)
 
+# Crea el botón "Mostrar árbol PP" y lo añade a la ventana
+boton_mostrar = tk.Button(ventana, text="Mostrar árbol PP", command=lambda: mostrarArbol(1))
+boton_mostrar.pack(padx=10, pady=10)
+
+boton_mostrarPasos = tk.Button(ventana, text="Mostrar pasos PP", command=lambda: mostrar_Pasos(1))
+boton_mostrarPasos.pack(padx=10, pady=10)
 
 def eliminar_imagen():
     if os.path.exists("imgPrimeroAmplitud.png"):
         os.remove("imgPrimeroAmplitud.png")
+    if os.path.exists("imgPrimeroProfundidad.png"):
+        os.remove("imgPrimeroProfundidad.png")
     if os.path.exists("temp.png"):
         os.remove("temp.png")
     ventana.destroy()

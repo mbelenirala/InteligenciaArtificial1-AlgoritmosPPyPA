@@ -6,15 +6,18 @@ import screeninfo
 import os
 
 # Define la función para generar el laberinto y el árbol
-def generar_laberinto_y_arbol(matriz):
-   arbolBusqueda, por_visitar, texto= primeroAmplitud(matriz)
-   cont = 0
-   #for e in arbolBusqueda:
+def generar_laberinto_y_arbol(matriz,algoritmo):
+    if algoritmo:
+        arbolBusqueda, por_visitar, texto= primeroProfundidad(matriz)
+    else:
+        arbolBusqueda, por_visitar, texto= primeroAmplitud(matriz)
+    cont = 0
+    #for e in arbolBusqueda:
     #                print("TIEMPO: ",cont,"Nodo:",e.padre.fila,e.padre.columna) #ESTO NO ANDA COMO DEBERIA :c
-     #               cont = cont+1
-   return arbolBusqueda, por_visitar, texto
+    #               cont = cont+1
+    return arbolBusqueda, por_visitar, texto
 
-def generarArbol(arbolBusqueda, por_visitar):
+def generarArbol(arbolBusqueda,por_visitar,algoritmo):
     g = Graph(engine='sfdp')
     g = graphviz.Digraph(format='png')
     for n in arbolBusqueda:
@@ -28,19 +31,28 @@ def generarArbol(arbolBusqueda, por_visitar):
         for x in por_visitar:
              if(n.hijo == x ):
                   g.node(str(nodo_hijo), style='filled', fillcolor='green')
-    g.render('imgPrimeroAmplitud')
+    if algoritmo:
+        g.render('imgPrimeroProfundidad')
+    else:
+        g.render('imgPrimeroAmplitud')
 
 
-def mostrar_arbol(matriz):
-     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz)
-     generarArbol(arbolBusqueda, por_visitar)
-     nombre_archivo = 'imgPrimeroAmplitud.png'
+def mostrar_arbol(matriz,algoritmo):
+     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo)
+     generarArbol(arbolBusqueda,por_visitar,algoritmo)
+     if algoritmo:
+        nombre_archivo = 'imgPrimeroProfundidad.png'
+     else:
+        nombre_archivo = 'imgPrimeroAmplitud.png'
 
      img = Image.open(nombre_archivo)
      img = img.resize((700, 700), Image.LANCZOS)
      img = ImageTk.PhotoImage(img)
      ventana = tk.Toplevel()
-     ventana.title("ALGORITMO PRIMERO AMPLITUD")
+     if algoritmo:
+        ventana.title("ALGORITMO PRIMERO PROFUNDIDAD")
+     else:
+        ventana.title("ALGORITMO PRIMERO AMPLITUD")
 
      # Crear un canvas para contener la imagen y agregar un scrollbar
      canvas = tk.Canvas(ventana, width=700, height=700)
@@ -59,8 +71,8 @@ def mostrar_arbol(matriz):
      panel.image = img
      panel.pack()
 
-def mostrarPasos(matriz):
-    arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz)
+def mostrarPasos(matriz,algoritmo):
+    arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo)
     ventana = Tk()
     ventana.title("Texto")
     
