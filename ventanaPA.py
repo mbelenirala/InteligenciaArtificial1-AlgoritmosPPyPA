@@ -1,6 +1,6 @@
 import tkinter as tk
 from PrimeroAmplitud import *
-from PIL import Image, ImageTk
+from PIL import Image, ImageDraw, ImageFont, ImageTk
 from networkx.drawing.nx_agraph import graphviz_layout
 import screeninfo
 import os
@@ -74,15 +74,58 @@ def mostrar_arbol(matriz,algoritmo):
 def mostrarPasos(matriz,algoritmo):
     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo)
     ventana = Tk()
-    ventana.title("Texto")
-    
-    # Crear un widget de Texto
-    widget_texto = Text(ventana, height=30, width=50)
+    if (algoritmo == 0):
+        ventana.title("PASOS: PRIMERO AMPLITUD")
+    else: 
+        ventana.title("PASOS: PRIMERO PROFUNDIDAD")
+    widget_texto = Text(ventana, height=30, width=50, state="disabled")
     widget_texto.pack()
-
-    # Agregar el contenido de la variable texto al widget de Texto
+    widget_texto.config(state="normal")
     for linea in texto:
         widget_texto.insert("end", linea + "\n")
 
+    widget_texto.config(state="disabled")
+
     ventana.mainloop()
+
+imagen_tk = None
+
+def mostrarLaberintoSolucion(matriz,algoritmo):
+    global imagen_tk
+    arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz, algoritmo)
+    size = (len(matriz[0]) * 40, len(matriz) * 40)
+    imagen = Image.new('RGB', size, color=(0, 0, 0))
+    draw = ImageDraw.Draw(imagen)
+    font_size = 32
+    font = ImageFont.truetype("arial.ttf", font_size)
+    cuadro_size = 40
+
+    for i in range(len(matriz)):
+        for j in range(len(matriz[0])):
+            if matriz[i][j] == 'x':
+                draw.text((j*cuadro_size, i*cuadro_size), 'x', font=font, fill=(255, 0, 0), stroke_width=1, stroke_fill=(255, 0, 0))
+            elif matriz[i][j] == '0':
+                draw.text((j*cuadro_size, i*cuadro_size), '0', font=font, fill=(0, 255, 0))
+            elif matriz[i][j] == 'F':
+                draw.text((j*cuadro_size, i*cuadro_size), 'F', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
+            elif matriz[i][j] == 'I':
+                draw.text((j*cuadro_size, i*cuadro_size), 'I', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
+            if (nodo(i, j) in por_visitar and nodo(i,j)!=nodo(0,0)and nodo(i,j)!=nodo(9,9)):
+               draw.text((j*cuadro_size, i*cuadro_size), '//', font=font, fill=(255, 255, 0), stroke_width=2,stroke_fill=(255, 255, 0))
+
+    if (algoritmo == 0): imagen.save("PA.png")
+    else: imagen.save("PP.png")
+    
+    #no anda para mostrar la imagen, tipo crea todo bien pero no muestra en la ventana :C 
+    ventana = Tk()
+    if (algoritmo == 0): ventana.title("LABERINTO: PRIMERO PROFUNDIDAD")
+    else: ventana.title("LABERINTO: PRIMERO PROFUNDIDAD")
+    imagen_tk = ImageTk.PhotoImage(file="PA.png")
+
+    print(imagen)
+    print("holis",imagen_tk)
+    label_imagen = tk.Label(ventana, image=imagen_tk)
+    label_imagen.pack(pady=100)
+    ventana.mainloop()
+
 

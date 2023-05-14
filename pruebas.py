@@ -25,7 +25,7 @@ def mostrar_matriz(matriz):
                 draw.text((j*cuadro_size, i*cuadro_size), 'F', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
             elif matriz[i][j] == 'I':
                 draw.text((j*cuadro_size, i*cuadro_size), 'I', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
-    # Guarda la imagen como un archivo temporal
+    # Guarda la imagen 
     imagen.save("temp.png")
 
 
@@ -79,6 +79,10 @@ def mostrar_Pasos(alg):
     global matriz
     mostrarPasos(matriz,alg)
 
+def mostrar_Laberinto(algoritmo):
+    global matriz
+    mostrarLaberintoSolucion(matriz,algoritmo)
+
 
 # Crea el botón "Mostrar árbol PA" y lo añade a la ventana
 boton_mostrar = tk.Button(ventana, text="Mostrar árbol PA", command=lambda: mostrarArbol(0))
@@ -92,6 +96,9 @@ boton_mostrar = tk.Button(ventana, text="Mostrar árbol PP", command=lambda: mos
 boton_mostrar.pack(padx=10, pady=10)
 
 boton_mostrarPasos = tk.Button(ventana, text="Mostrar pasos PP", command=lambda: mostrar_Pasos(1))
+boton_mostrarPasos.pack(padx=10, pady=10)
+
+boton_mostrarPasos = tk.Button(ventana, text="Mostrar laberinto PA", command=lambda: mostrar_Laberinto(0))
 boton_mostrarPasos.pack(padx=10, pady=10)
 
 def eliminar_imagen():
