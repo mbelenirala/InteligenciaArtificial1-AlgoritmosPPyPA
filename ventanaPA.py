@@ -115,17 +115,6 @@ def mostrarLaberintoSolucion(matriz,algoritmo):
 
     if (algoritmo == 0): imagen.save("PA.png")
     else: imagen.save("PP.png")
-    
-    #no anda para mostrar la imagen, tipo crea todo bien pero no muestra en la ventana :C 
-    ventana = Tk()
-    if (algoritmo == 0): ventana.title("LABERINTO: PRIMERO PROFUNDIDAD")
-    else: ventana.title("LABERINTO: PRIMERO PROFUNDIDAD")
-    imagen_tk = ImageTk.PhotoImage(file="PA.png")
 
-    print(imagen)
-    print("holis",imagen_tk)
-    label_imagen = tk.Label(ventana, image=imagen_tk)
-    label_imagen.pack(pady=100)
-    ventana.mainloop()
 
 

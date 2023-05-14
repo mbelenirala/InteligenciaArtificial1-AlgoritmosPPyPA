@@ -4,10 +4,6 @@ import tkinter as tk
 import screeninfo
 from ventanaPA import *
 
-#ACA ESTOY PROBANDO COMO MOSTRAR EL LABERINTO EN UNA IMAGEN, FIJATE SI TE GUSTA ASI 
-# O SINO PONE OTRA IDEA PORQUE SOLO SE ME OCURRIO ESTA :c
-
-
 def mostrar_matriz(matriz):
     size = (len(matriz[0])*40, len(matriz)*40)
     imagen = Image.new('RGB', size, color=(0, 0, 0))
@@ -65,12 +61,6 @@ def nuevoLaberinto():
     label_imagen.configure(image=imagen)
     label_imagen.image = imagen  # Esto es necesario para evitar errores de garbage collection
 
-
-
-# Crea un widget Button para generar la solución
-boton_generar = tk.Button(ventana, text="Generar nuevo laberinto", command=nuevoLaberinto)
-boton_generar.pack()
-
 def mostrarArbol(alg):
     global matriz
     mostrar_arbol(matriz,alg)
@@ -79,19 +69,33 @@ def mostrar_Pasos(alg):
     global matriz
     mostrarPasos(matriz,alg)
 
+
 def mostrar_Laberinto(algoritmo):
-    global matriz
+    global matriz, imgLaberinto, imgLaberintoPP
     mostrarLaberintoSolucion(matriz,algoritmo)
+    ventanaLaberinto = tk.Toplevel(ventana)
+    if (algoritmo == 0): 
+        ventanaLaberinto.title("LABERINTO: PRIMERO PROFUNDIDAD")
+        imgLaberinto = ImageTk.PhotoImage(Image.open("PA.png"))
+        label_imagen = tk.Label(ventanaLaberinto, image=imgLaberinto)
+    else: 
+        ventanaLaberinto.title("LABERINTO: PRIMERO PROFUNDIDAD")
+        imgLaberintoPP = ImageTk.PhotoImage(Image.open("PP.png"))
+        label_imagen = tk.Label(ventanaLaberinto, image=imgLaberintoPP)
+    
+    label_imagen.pack(pady=100)
+    ventanaLaberinto.mainloop()
 
+#Botones
+boton_generar = tk.Button(ventana, text="Generar nuevo laberinto", command=nuevoLaberinto)
+boton_generar.pack()
 
-# Crea el botón "Mostrar árbol PA" y lo añade a la ventana
 boton_mostrar = tk.Button(ventana, text="Mostrar árbol PA", command=lambda: mostrarArbol(0))
 boton_mostrar.pack(padx=10, pady=10)
 
 boton_mostrarPasos = tk.Button(ventana, text="Mostrar pasos PA", command=lambda: mostrar_Pasos(0))
 boton_mostrarPasos.pack(padx=10, pady=10)
 
-# Crea el botón "Mostrar árbol PP" y lo añade a la ventana
 boton_mostrar = tk.Button(ventana, text="Mostrar árbol PP", command=lambda: mostrarArbol(1))
 boton_mostrar.pack(padx=10, pady=10)
 
@@ -101,6 +105,10 @@ boton_mostrarPasos.pack(padx=10, pady=10)
 boton_mostrarPasos = tk.Button(ventana, text="Mostrar laberinto PA", command=lambda: mostrar_Laberinto(0))
 boton_mostrarPasos.pack(padx=10, pady=10)
 
+boton_mostrarPasos = tk.Button(ventana, text="Mostrar laberinto PP", command=lambda: mostrar_Laberinto(1))
+boton_mostrarPasos.pack(padx=10, pady=10)
+
+
 def eliminar_imagen():
     if os.path.exists("imgPrimeroAmplitud.png"):
         os.remove("imgPrimeroAmplitud.png")
@@ -108,10 +116,12 @@ def eliminar_imagen():
         os.remove("imgPrimeroProfundidad.png")
     if os.path.exists("temp.png"):
         os.remove("temp.png")
+    if os.path.exists("PA.png"):
+        os.remove("PA.png")
+    if os.path.exists("PP.png"):
+        os.remove("PP.png")
     ventana.destroy()
 
-# Vincular la función eliminar_imagen a la señal de cierre de la ventana principal
 ventana.protocol("WM_DELETE_WINDOW", eliminar_imagen)
 
-# Inicia el loop de eventos de Tkinter
 ventana.mainloop()
