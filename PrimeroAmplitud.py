@@ -5,7 +5,7 @@ from PIL import Image
 from modelo import *
 
 
-def primeroAmplitud(matriz):
+def primeroAmplitud(matriz,sentido):
     inicio = nodo(9, 9)
     fin = nodo(0, 0)
     arbolBusqueda = []
@@ -14,24 +14,25 @@ def primeroAmplitud(matriz):
     tiempo = 0
     porVisitar.append(arbol(inicio, inicio))
     Comienzo = False
-    print("TIEMPO N°: ",tiempo,"SE AGREGA NODO: ",inicio)
+    #print("TIEMPO N°: ",tiempo,"SE AGREGA NODO: ",inicio)
     texto = []  # variable para guardar el texto de los prints
     texto.append(f"TIEMPO N°: {tiempo} SE AGREGA NODO: {inicio}")
+    print("el sentido es: ", sentido)
     while porVisitar:
         tiempo += 1
         caminoAux = porVisitar.pop(0)
         porVisitar = eliminarNodosDuplicados(porVisitar)
         nodoActual = caminoAux.hijo
         if nodoActual not in visitados:
-            print("-------------------------------------------")
-            print("TIEMPO N°: ",tiempo,"PROCESANDO NODO: ",nodoActual)
+            #print("-------------------------------------------")
+            #print("TIEMPO N°: ",tiempo,"PROCESANDO NODO: ",nodoActual)
             texto.append("-------------------------------------------")
             texto.append(f"TIEMPO N°: {tiempo} PROCESANDO NODO: {nodoActual}")
             vecinos = []
             if Comienzo:
                 arbolBusqueda.append(caminoAux)
             if nodoActual == fin:
-                print("TIEMPO N°: ",tiempo,"SE ENCONTRO EL NODO FIN ")
+                #print("TIEMPO N°: ",tiempo,"SE ENCONTRO EL NODO FIN ")
                 texto.append(f"TIEMPO N°: {tiempo} SE ENCONTRO NODO FINAL")
                 camino = [nodoActual]
                 while nodoActual != inicio:
@@ -41,16 +42,16 @@ def primeroAmplitud(matriz):
                             camino.insert(0, nodoActual)
                 return arbolBusqueda, camino, texto
             visitados.append(nodoActual)
-            vecinos = movimientos(nodoActual, matriz)
+            vecinos = movimientos(nodoActual, matriz,sentido)
             for nodo_hijo in vecinos:
                 if nodo_hijo not in visitados:
-                    print("TIEMPO N°: ",tiempo,"Se agregan a la lista: ",nodo_hijo)
+                    #print("TIEMPO N°: ",tiempo,"Se agregan a la lista: ",nodo_hijo)
                     texto.append(f"TIEMPO N°: {tiempo} Se agregan a la lista: {nodo_hijo}")
                     porVisitar.append(arbol(nodoActual, nodo_hijo))
         Comienzo=True
         
 
-def primeroProfundidad(matriz):
+def primeroProfundidad(matriz,sentido):
     inicio = nodo(9, 9)
     fin = nodo(0, 0)
     arbolBusqueda = []
@@ -59,24 +60,25 @@ def primeroProfundidad(matriz):
     tiempo = 0
     porVisitar.append(arbol(inicio, inicio))
     Comienzo = False
-    print("TIEMPO N°: ",tiempo,"SE AGREGA NODO: ",inicio)
+    #print("TIEMPO N°: ",tiempo,"SE AGREGA NODO: ",inicio)
     texto = []  # variable para guardar el texto de los prints
     texto.append(f"TIEMPO N°: {tiempo} SE AGREGA NODO: {inicio}")
+    print("el sentido es: ", sentido)
     while porVisitar:
         tiempo += 1
         caminoAux = porVisitar.pop(0)
         porVisitar = eliminarNodosDuplicados(porVisitar)
         nodoActual = caminoAux.hijo
         if nodoActual not in visitados:
-            print("-------------------------------------------")
-            print("TIEMPO N°: ",tiempo,"PROCESANDO NODO: ",nodoActual)
+            #print("-------------------------------------------")
+            #print("TIEMPO N°: ",tiempo,"PROCESANDO NODO: ",nodoActual)
             texto.append("-------------------------------------------")
             texto.append(f"TIEMPO N°: {tiempo} PROCESANDO NODO: {nodoActual}")
             vecinos = []
             if Comienzo:
                 arbolBusqueda.append(caminoAux)
             if nodoActual == fin:
-                print("TIEMPO N°: ",tiempo,"SE ENCONTRO EL NODO FIN ")
+                #print("TIEMPO N°: ",tiempo,"SE ENCONTRO EL NODO FIN ")
                 texto.append(f"TIEMPO N°: {tiempo} SE ENCONTRO NODO FINAL")
                 camino = [nodoActual]
                 while nodoActual != inicio:
@@ -86,37 +88,56 @@ def primeroProfundidad(matriz):
                             camino.insert(0, nodoActual)
                 return arbolBusqueda, camino, texto
             visitados.append(nodoActual)
-            vecinos = movimientos(nodoActual, matriz)
+            vecinos = movimientos(nodoActual, matriz,sentido)
             vecinos.reverse()
             for nodo_hijo in vecinos:
                 if nodo_hijo not in visitados:
-                    print("TIEMPO N°: ",tiempo,"Se agregan a la lista: ",nodo_hijo)
+                    #print("TIEMPO N°: ",tiempo,"Se agregan a la lista: ",nodo_hijo)
                     texto.append(f"TIEMPO N°: {tiempo} Se agregan a la lista: {nodo_hijo}")
                     porVisitar.insert(0,arbol(nodoActual, nodo_hijo))
         Comienzo=True
 
 
-def movimientos(nodoActual, matriz):
+def movimientos(nodoActual, matriz,sentido):
     expandir_nodo = []
     fila = nodoActual.fila
     columna = nodoActual.columna
+    if (sentido == 1):
+        #Sentido horario
+         #Arriba
+        if fila > 0 and matriz[fila-1][columna] != 'x':
+            expandir_nodo.append(nodo(fila - 1, columna))
 
-    #Arriba
-    if fila > 0 and matriz[fila-1][columna] != 'x':
-        expandir_nodo.append(nodo(fila - 1, columna))
+        #Derecha
+        if columna < 9 and matriz[fila][columna+1] != 'x':
+            expandir_nodo.append(nodo(fila, columna + 1))
 
-    #Abajo``
-    if fila < 9 and matriz[fila+1][columna] != 'x':
+        #Abajo
+        if fila < 9 and matriz[fila+1][columna] != 'x':
+            
+            expandir_nodo.append(nodo(fila + 1, columna))
+
+        #Izquierda
+        if columna > 0 and matriz[fila][columna-1] != 'x':
+            expandir_nodo.append(nodo(fila, columna - 1))
+    elif (sentido == 2):
+        #Sentido antihorario
+        #Arriba
+        if fila > 0 and matriz[fila-1][columna] != 'x':
+            expandir_nodo.append(nodo(fila - 1, columna))
+
+        #Izquierda
+        if columna > 0 and matriz[fila][columna-1] != 'x':
+            expandir_nodo.append(nodo(fila, columna - 1))
+
+        #Abajo
+        if fila < 9 and matriz[fila+1][columna] != 'x':
+            
+            expandir_nodo.append(nodo(fila + 1, columna))
         
-        expandir_nodo.append(nodo(fila + 1, columna))
-
-    #Izquierda
-    if columna > 0 and matriz[fila][columna-1] != 'x':
-        expandir_nodo.append(nodo(fila, columna - 1))
-
-    #Derecha
-    if columna < 9 and matriz[fila][columna+1] != 'x':
-        expandir_nodo.append(nodo(fila, columna + 1))
+        #Derecha
+        if columna < 9 and matriz[fila][columna+1] != 'x':
+            expandir_nodo.append(nodo(fila, columna + 1))  
 
     return expandir_nodo
 

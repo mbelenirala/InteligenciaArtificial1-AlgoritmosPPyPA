@@ -6,11 +6,11 @@ import screeninfo
 import os
 
 # Define la función para generar el laberinto y el árbol
-def generar_laberinto_y_arbol(matriz,algoritmo):
+def generar_laberinto_y_arbol(matriz,algoritmo,sentido):
     if algoritmo:
-        arbolBusqueda, por_visitar, texto= primeroProfundidad(matriz)
+        arbolBusqueda, por_visitar, texto= primeroProfundidad(matriz,sentido)
     else:
-        arbolBusqueda, por_visitar, texto= primeroAmplitud(matriz)
+        arbolBusqueda, por_visitar, texto= primeroAmplitud(matriz,sentido)
     cont = 0
     #for e in arbolBusqueda:
     #                print("TIEMPO: ",cont,"Nodo:",e.padre.fila,e.padre.columna) #ESTO NO ANDA COMO DEBERIA :c
@@ -25,9 +25,7 @@ def generarArbol(arbolBusqueda,por_visitar,algoritmo):
         nodo_hijo = (n.hijo.fila,n.hijo.columna)
         g.edge(str(nodo_padre), str(nodo_hijo))
         if nodo_padre == (9,9):
-            g.node(str(nodo_padre), style='filled', fillcolor='blue')
-        if nodo_hijo == (0,0):
-            g.node(str(nodo_hijo), style='filled', fillcolor='green')
+            g.node(str(nodo_padre), style='filled', fillcolor='green')
         for x in por_visitar:
              if(n.hijo == x ):
                   g.node(str(nodo_hijo), style='filled', fillcolor='green')
@@ -37,8 +35,8 @@ def generarArbol(arbolBusqueda,por_visitar,algoritmo):
         g.render('imgPrimeroAmplitud')
 
 
-def mostrar_arbol(matriz,algoritmo):
-     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo)
+def mostrar_arbol(matriz,algoritmo,sentido):
+     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo,sentido)
      generarArbol(arbolBusqueda,por_visitar,algoritmo)
      if algoritmo:
         nombre_archivo = 'imgPrimeroProfundidad.png'
@@ -71,8 +69,22 @@ def mostrar_arbol(matriz,algoritmo):
      panel.image = img
      panel.pack()
 
-def mostrarPasos(matriz,algoritmo):
-    arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo)
+     contenedor = tk.Frame(ventana)
+     contenedor.pack(fill="both", expand=True)
+     frame_titulo = tk.Frame(contenedor)
+     frame_titulo.pack(fill="x")
+     titulo = tk.Label(frame_titulo, text="Pasos para encontrar la salida", font=("Arial", 14))
+     titulo.pack(pady=10)
+     frame_texto = tk.Frame(contenedor, width=500, height=700)
+     frame_texto.pack(side="left")
+     widget_texto = tk.Text(frame_texto)
+     widget_texto.pack(fill="both", expand=True)
+     for linea in texto:
+        widget_texto.insert("end", linea + "\n")
+
+
+def mostrarPasos(matriz,algoritmo,sentido):
+    arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo,sentido)
     ventana = Tk()
     if (algoritmo == 0):
         ventana.title("PASOS: PRIMERO AMPLITUD")
@@ -90,9 +102,9 @@ def mostrarPasos(matriz,algoritmo):
 
 imagen_tk = None
 
-def mostrarLaberintoSolucion(matriz,algoritmo):
+def mostrarLaberintoSolucion(matriz,algoritmo,sentido):
     global imagen_tk
-    arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz, algoritmo)
+    arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz, algoritmo,sentido)
     size = (len(matriz[0]) * 40, len(matriz) * 40)
     imagen = Image.new('RGB', size, color=(0, 0, 0))
     draw = ImageDraw.Draw(imagen)
