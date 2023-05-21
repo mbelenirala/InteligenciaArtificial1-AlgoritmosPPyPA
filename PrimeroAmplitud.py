@@ -27,7 +27,8 @@ def primeroAmplitud(matriz,sentido):
             #print("-------------------------------------------")
             #print("TIEMPO N°: ",tiempo,"PROCESANDO NODO: ",nodoActual)
             texto.append("-------------------------------------------")
-            texto.append(f"TIEMPO N°: {tiempo} PROCESANDO NODO: {nodoActual}")
+            texto.append(f"TIEMPO N°: {tiempo}")
+            texto.append(f"PROCESANDO NODO: {nodoActual}")
             vecinos = []
             if Comienzo:
                 arbolBusqueda.append(caminoAux)
@@ -43,11 +44,17 @@ def primeroAmplitud(matriz,sentido):
                 return arbolBusqueda, camino, texto
             visitados.append(nodoActual)
             vecinos = movimientos(nodoActual, matriz,sentido)
+            txtAgregados = ""
             for nodo_hijo in vecinos:
                 if nodo_hijo not in visitados:
                     #print("TIEMPO N°: ",tiempo,"Se agregan a la lista: ",nodo_hijo)
-                    texto.append(f"TIEMPO N°: {tiempo} Se agregan a la lista: {nodo_hijo}")
+                    txtAgregados += " " + str(nodo_hijo)
                     porVisitar.append(arbol(nodoActual, nodo_hijo))
+        txtCola = ""
+        for nodoCola in porVisitar:
+            txtCola += " " + str(nodoCola.hijo)
+        texto.append(f"Cola: {txtCola}")
+        texto.append(f"(Se agregan: {txtAgregados})")
         Comienzo=True
         
 

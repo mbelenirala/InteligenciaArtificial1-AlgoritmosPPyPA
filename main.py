@@ -2,16 +2,20 @@ from Genlab import *
 from PIL import Image, ImageDraw, ImageFont, ImageTk
 import tkinter as tk
 import screeninfo
-from VentanaPA import *
+from ventanaPA import *
 from tkinter import ttk
 
 def mostrar_matriz(matriz):
     size = (len(matriz[0])*40, len(matriz)*40)
+    # size = (200,200)
     imagen = Image.new('RGB', size, color=(0, 0, 0))
+    # imagen = imagen.resize((300,300), resample=Image.BICUBIC)
     draw = ImageDraw.Draw(imagen)
-    font_size = 32
+    # font_size = 32
+    font_size = 16
     font = ImageFont.truetype("arial.ttf", font_size)
-    cuadro_size = 40
+    # cuadro_size = 40
+    cuadro_size = 20
     for i in range(len(matriz)):
         for j in range(len(matriz[0])):
             if matriz[i][j] == 'x':
@@ -35,9 +39,14 @@ mostrar_matriz(matriz)
 ventana = tk.Tk()
 screen = screeninfo.get_monitors()[0]
 width, height = screen.width, screen.height
+# width = ventana.winfo_screenwidth()
+# height = ventana.winfo_screenheight()
+# x = (width - ventana.winfo_reqwidth()) // 2
+# y = (height - ventana.winfo_reqheight()) // 2
 
 # Establecer las dimensiones de la ventana principal
 ventana.geometry("%dx%d" % (width, height))
+# ventana.geometry(f"{x}x{y}")
 ventana.title("Inteligencia Artificial 1")
 
 notebook = ttk.Notebook(ventana)
@@ -250,7 +259,51 @@ tk.Button(frame_comparaciones, text='Comparar árboles de búsqueda',  command=l
 tk.Button(frame_comparaciones, text='Comparar laberintos encontrados',command=lambda: mostrar_Laberinto(3), width=35).pack(pady=(10, 10))
 
 #Contenido de la solapa "Ayuda"
-tk.Label(ayuda_tab, text='aca irian las referencias con imagenes, etc').pack()
+tk.Label(ayuda_tab, text='REFERENCIAS',font=("Arial", 14)).pack()
+
+#Frame en Ayuda de Laberinto
+frame_ref_laberinto = tk.LabelFrame(ayuda_tab, text='Sobre el LABERINTO: ', font=("Arial", 14))
+frame_ref_laberinto.configure(bg='white')
+frame_ref_laberinto.pack(side='left', padx=10, pady=10, fill='x', expand=True)
+
+tk.Label(frame_ref_laberinto, text='Inicio: ',bg='white').pack(pady=(0, 0))
+img_lab_inicio = tk.PhotoImage(file="img/inicio_lab.PNG")
+tk.Label(frame_ref_laberinto, image=img_lab_inicio).pack()
+
+tk.Label(frame_ref_laberinto, text='Fin: ',bg='white').pack(pady=(0, 0))
+img_lab_fin = tk.PhotoImage(file="img/fin_lab.PNG")
+tk.Label(frame_ref_laberinto, image=img_lab_fin).pack()
+
+tk.Label(frame_ref_laberinto, text='Pared: ',bg='white').pack(pady=(0, 0))
+
+tk.Label(frame_ref_laberinto, text='Lugar accesible: ',bg='white').pack(pady=(0, 0))
+img_lab_camino = tk.PhotoImage(file="img/camino_lab.PNG")
+tk.Label(frame_ref_laberinto, image=img_lab_camino).pack()
+
+tk.Label(frame_ref_laberinto, text='Lugar bloqueado: ',bg='white').pack(pady=(0, 0))
+img_lab_bloqueado = tk.PhotoImage(file="img/bloqueado_lab.PNG")
+tk.Label(frame_ref_laberinto, image=img_lab_bloqueado).pack()
+
+#Frame en Ayuda de los Árboles
+frame_ref_arbol = tk.LabelFrame(ayuda_tab, text='Sobre los ÁRBOLES: ', font=("Arial", 14))
+frame_ref_arbol.configure(bg='white')
+frame_ref_arbol.pack(side='left', padx=10, pady=10, fill='x', expand=True)
+
+tk.Label(frame_ref_arbol, text='Nodo Inicio: ',bg='white').pack(pady=(0, 0))
+img_arb_inicio = tk.PhotoImage(file="img/inicio_arb.PNG")
+tk.Label(frame_ref_arbol, image=img_arb_inicio).pack()
+
+tk.Label(frame_ref_arbol, text='Nodo Fin: ',bg='white').pack(pady=(0, 0))
+img_arb_fin = tk.PhotoImage(file="img/fin_arb.PNG")
+tk.Label(frame_ref_arbol, image=img_arb_fin).pack()
+
+tk.Label(frame_ref_arbol, text='Nodo expandido pero no camino solución: ',bg='white').pack(pady=(0, 0))
+img_arb_expansion = tk.PhotoImage(file="img/expansion_arb.PNG")
+tk.Label(frame_ref_arbol, image=img_arb_expansion).pack()
+
+tk.Label(frame_ref_arbol, text='Nodo expandido y camino solución: ',bg='white').pack(pady=(0, 0))
+img_arb_solucion = tk.PhotoImage(file="img/solucion_arb.PNG")
+tk.Label(frame_ref_arbol, image=img_arb_solucion).pack()
 
 def eliminar_imagen():
     if os.path.exists("imgPrimeroAmplitud.png"):
