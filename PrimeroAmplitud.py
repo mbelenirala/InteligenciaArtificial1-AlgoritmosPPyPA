@@ -16,7 +16,7 @@ def primeroAmplitud(matriz,sentido):
     Comienzo = False
     #print("TIEMPO N°: ",tiempo,"SE AGREGA NODO: ",inicio)
     texto = []  # variable para guardar el texto de los prints
-    texto.append(f"TIEMPO N°: {tiempo} SE AGREGA NODO: {inicio}")
+    texto.append(f"TIEMPO N°: {tiempo} SE AGREGA NODO INICIO: {inicio}")
     print("el sentido es: ", sentido)
     while porVisitar:
         tiempo += 1
@@ -69,7 +69,7 @@ def primeroProfundidad(matriz,sentido):
     Comienzo = False
     #print("TIEMPO N°: ",tiempo,"SE AGREGA NODO: ",inicio)
     texto = []  # variable para guardar el texto de los prints
-    texto.append(f"TIEMPO N°: {tiempo} SE AGREGA NODO: {inicio}")
+    texto.append(f"TIEMPO N°: {tiempo} SE AGREGA NODO INICIO: {inicio}")
     print("el sentido es: ", sentido)
     while porVisitar:
         tiempo += 1
@@ -80,7 +80,8 @@ def primeroProfundidad(matriz,sentido):
             #print("-------------------------------------------")
             #print("TIEMPO N°: ",tiempo,"PROCESANDO NODO: ",nodoActual)
             texto.append("-------------------------------------------")
-            texto.append(f"TIEMPO N°: {tiempo} PROCESANDO NODO: {nodoActual}")
+            texto.append(f"TIEMPO N°: {tiempo}")
+            texto.append(f"PROCESANDO NODO: {nodoActual}")
             vecinos = []
             if Comienzo:
                 arbolBusqueda.append(caminoAux)
@@ -97,11 +98,17 @@ def primeroProfundidad(matriz,sentido):
             visitados.append(nodoActual)
             vecinos = movimientos(nodoActual, matriz,sentido)
             vecinos.reverse()
+            txtAgregados = ""
             for nodo_hijo in vecinos:
                 if nodo_hijo not in visitados:
                     #print("TIEMPO N°: ",tiempo,"Se agregan a la lista: ",nodo_hijo)
-                    texto.append(f"TIEMPO N°: {tiempo} Se agregan a la lista: {nodo_hijo}")
+                    txtAgregados += " " + str(nodo_hijo)
                     porVisitar.insert(0,arbol(nodoActual, nodo_hijo))
+        txtCola = ""
+        for nodoCola in porVisitar:
+            txtCola += " " + str(nodoCola.hijo)
+        texto.append(f"Cola: {txtCola}")
+        texto.append(f"(Se agregan: {txtAgregados})")
         Comienzo=True
 
 

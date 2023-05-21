@@ -163,9 +163,9 @@ def compararArboles():
     ventanaArboles.title("ARBOLES")
     
     contenedorArbol = tk.Frame(ventanaArboles)
-    contenedorArbol.pack(padx=10, pady=10)
+    contenedorArbol.pack()
     arbolPA= Image.open("imgPrimeroAmplitud.png")
-    arbolPA = arbolPA.resize((700, 700), Image.LANCZOS)
+    arbolPA = arbolPA.resize((600, 600), Image.LANCZOS)
     arbolPA = ImageTk.PhotoImage(arbolPA)
     frame_izq = tk.Frame(contenedorArbol)
     frame_izq.grid(row=0, column=0, padx=10, pady=10)
@@ -176,7 +176,7 @@ def compararArboles():
     titulo_izquierdo.pack(pady=10)
     
     arbolPP = Image.open("imgPrimeroProfundidad.png")
-    arbolPP = arbolPP.resize((400, 700), Image.LANCZOS)
+    arbolPP = arbolPP.resize((350, 600), Image.LANCZOS)
     arbolPP = ImageTk.PhotoImage(arbolPP)
     frame_der = tk.Frame(contenedorArbol)
     frame_der.grid(row=0, column=1, padx=10, pady=10)
