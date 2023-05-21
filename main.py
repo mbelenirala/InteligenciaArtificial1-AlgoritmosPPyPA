@@ -5,28 +5,60 @@ import screeninfo
 from ventanaPA import *
 from tkinter import ttk
 
-def mostrar_matriz(matriz):
-    size = (len(matriz[0])*40, len(matriz)*40)
-    # size = (200,200)
-    imagen = Image.new('RGB', size, color=(0, 0, 0))
-    # imagen = imagen.resize((300,300), resample=Image.BICUBIC)
+
+#no se utiliza!! 
+# def mostrar_matriz(matriz):
+#     size = (len(matriz[0])*20, len(matriz)*20)
+#     # size = (200,200)
+#     imagen = Image.new('RGB', size, color=(0, 0, 0))
+#     # imagen = imagen.resize((300,300), resample=Image.BICUBIC)
+#     draw = ImageDraw.Draw(imagen)
+#     # font_size = 32
+#     font_size = 16
+#     font = ImageFont.truetype("arial.ttf", font_size)
+#     # cuadro_size = 40
+#     cuadro_size = 20
+#     for i in range(len(matriz)):
+#         for j in range(len(matriz[0])):
+#             if matriz[i][j] == 'x':
+#                 draw.text((j*cuadro_size, i*cuadro_size), 'x', font=font, fill=(255, 0, 0), stroke_width=1, stroke_fill=(255, 0, 0))
+#             elif matriz[i][j] == '0':
+#                 draw.text((j*cuadro_size, i*cuadro_size), '0', font=font, fill=(0, 255, 0))
+#             elif matriz[i][j] == 'F':
+#                 draw.text((j*cuadro_size, i*cuadro_size), 'F', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
+#             elif matriz[i][j] == 'I':
+#                 draw.text((j*cuadro_size, i*cuadro_size), 'I', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
+#     # Guarda la imagen 
+#     imagen.save("temp.png")
+
+def dibujar_laberinto(laberinto):
+    alto = len(laberinto)
+    ancho = len(laberinto[0])
+    tamano_celda = 20  
+    alto_imagen = alto * tamano_celda + 1
+    ancho_imagen = ancho * tamano_celda + 1
+
+    imagen = Image.new("RGB", (ancho_imagen, alto_imagen), color=(255, 255, 255))
     draw = ImageDraw.Draw(imagen)
-    # font_size = 32
-    font_size = 16
-    font = ImageFont.truetype("arial.ttf", font_size)
-    # cuadro_size = 40
-    cuadro_size = 20
-    for i in range(len(matriz)):
-        for j in range(len(matriz[0])):
-            if matriz[i][j] == 'x':
-                draw.text((j*cuadro_size, i*cuadro_size), 'x', font=font, fill=(255, 0, 0), stroke_width=1, stroke_fill=(255, 0, 0))
-            elif matriz[i][j] == '0':
-                draw.text((j*cuadro_size, i*cuadro_size), '0', font=font, fill=(0, 255, 0))
-            elif matriz[i][j] == 'F':
-                draw.text((j*cuadro_size, i*cuadro_size), 'F', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
-            elif matriz[i][j] == 'I':
-                draw.text((j*cuadro_size, i*cuadro_size), 'I', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
-    # Guarda la imagen 
+
+    for fila in range(alto):
+        for columna in range(ancho):
+            celda = laberinto[fila][columna]
+            x1 = columna * tamano_celda
+            y1 = fila * tamano_celda
+            x2 = x1 + tamano_celda
+            y2 = y1 + tamano_celda
+
+            if celda == 'x':  #pared
+                draw.rectangle((x1, y1, x2, y2), fill=(0, 0, 0))
+            elif celda == '0':  #espacio libre
+                draw.rectangle((x1, y1, x2, y2), fill=(255, 250, 205))
+            elif celda == 'F': 
+                draw.rectangle((x1, y1, x2, y2), fill=(255, 0, 255)) #final
+            elif celda == 'I': 
+                draw.rectangle((x1, y1, x2, y2), fill=(153, 50, 204)) #inicio
+            draw.line([(x1, y1), (x2, y1), (x2, y2), (x1, y2), (x1, y1)], fill=(0, 0, 0), width=1)
+
     imagen.save("temp.png")
 
 
@@ -34,7 +66,7 @@ matriz = generateMaze()
 height = 10
 width = 10
 printMaze(matriz,height,width)
-mostrar_matriz(matriz)
+dibujar_laberinto(matriz)
 
 ventana = tk.Tk()
 screen = screeninfo.get_monitors()[0]
@@ -108,7 +140,7 @@ def nuevoLaberinto():
     print("Generando nuevo laberinto...")
     global matriz 
     matriz = generateMaze()
-    mostrar_matriz(matriz)
+    dibujar_laberinto(matriz)
     imagen = ImageTk.PhotoImage(Image.open("temp.png"))
     label_imagen.configure(image=imagen)
     label_imagen.image = imagen  
@@ -144,7 +176,7 @@ def compararArboles():
     titulo_izquierdo.pack(pady=10)
     
     arbolPP = Image.open("imgPrimeroProfundidad.png")
-    arbolPP = arbolPP.resize((700, 700), Image.LANCZOS)
+    arbolPP = arbolPP.resize((400, 700), Image.LANCZOS)
     arbolPP = ImageTk.PhotoImage(arbolPP)
     frame_der = tk.Frame(contenedorArbol)
     frame_der.grid(row=0, column=1, padx=10, pady=10)
@@ -166,7 +198,7 @@ def mostrar_Laberinto(algoritmo):
     contenedor.pack(padx=10, pady=10)
 
     if algoritmo == 0:
-        mostrarLaberintoSolucion(matriz, algoritmo,opcion.get())
+        dibujarLaberintoSolucion(matriz, algoritmo,opcion.get())
         ventanaLaberinto.title("LABERINTO: PRIMERO AMPLITUD")
         imgLaberinto = ImageTk.PhotoImage(Image.open("PA.png"))
         frame_izquierdo = tk.Frame(contenedor)
@@ -177,7 +209,7 @@ def mostrar_Laberinto(algoritmo):
         titulo_izquierdo = tk.Label(frame_izquierdo, text="Laberinto Algoritmo Primero Amplitud", font=("Arial", 14))
         titulo_izquierdo.pack(pady=10)
     elif algoritmo == 1:
-        mostrarLaberintoSolucion(matriz, algoritmo,opcion.get())
+        dibujarLaberintoSolucion(matriz, algoritmo,opcion.get())
         ventanaLaberinto.title("LABERINTO: PRIMERO PROFUNDIDAD")
         imgLaberintoPP = ImageTk.PhotoImage(Image.open("PP.png"))
         frame_derecho = tk.Frame(contenedor)
@@ -188,8 +220,8 @@ def mostrar_Laberinto(algoritmo):
         titulo_derecho = tk.Label(frame_derecho, text="Laberinto Algoritmo Primero Profundidad", font=("Arial", 14))
         titulo_derecho.pack(pady=10)
     elif algoritmo == 3:
-        mostrarLaberintoSolucion(matriz, 0,opcion.get())
-        mostrarLaberintoSolucion(matriz, 1,opcion.get())
+        dibujarLaberintoSolucion(matriz, 0,opcion.get())
+        dibujarLaberintoSolucion(matriz, 1,opcion.get())
         ventanaLaberinto.title("COMPARAR ALGORITMOS")
         imgLaberinto = ImageTk.PhotoImage(Image.open("PA.png"))
         frame_izquierdo = tk.Frame(contenedor)
@@ -256,7 +288,7 @@ tk.Button(frame_profundidad, text='Mostrar pasos primero profundidad', command=l
 
 #Botones del frame_comparaciones
 tk.Button(frame_comparaciones, text='Comparar árboles de búsqueda',  command=lambda: compararArboles(),width=35).pack(pady=(0, 0))
-tk.Button(frame_comparaciones, text='Comparar laberintos encontrados',command=lambda: mostrar_Laberinto(3), width=35).pack(pady=(10, 10))
+tk.Button(frame_comparaciones, text='Comparar laberintos solución',command=lambda: mostrar_Laberinto(3), width=35).pack(pady=(10, 10))
 
 #Contenido de la solapa "Ayuda"
 tk.Label(ayuda_tab, text='REFERENCIAS',font=("Arial", 14)).pack()
@@ -266,6 +298,10 @@ frame_ref_laberinto = tk.LabelFrame(ayuda_tab, text='Sobre el LABERINTO: ', font
 frame_ref_laberinto.configure(bg='white')
 frame_ref_laberinto.pack(side='left', padx=10, pady=10, fill='x', expand=True)
 
+tk.Label(frame_ref_laberinto, text='Laberinto: ',bg='white').pack(pady=(0, 0))
+img_lab = tk.PhotoImage(file="img/laberintoGenerado.png")
+tk.Label(frame_ref_laberinto, image=img_lab).pack()
+
 tk.Label(frame_ref_laberinto, text='Inicio: ',bg='white').pack(pady=(0, 0))
 img_lab_inicio = tk.PhotoImage(file="img/inicio_lab.PNG")
 tk.Label(frame_ref_laberinto, image=img_lab_inicio).pack()
@@ -273,8 +309,6 @@ tk.Label(frame_ref_laberinto, image=img_lab_inicio).pack()
 tk.Label(frame_ref_laberinto, text='Fin: ',bg='white').pack(pady=(0, 0))
 img_lab_fin = tk.PhotoImage(file="img/fin_lab.PNG")
 tk.Label(frame_ref_laberinto, image=img_lab_fin).pack()
-
-tk.Label(frame_ref_laberinto, text='Pared: ',bg='white').pack(pady=(0, 0))
 
 tk.Label(frame_ref_laberinto, text='Lugar accesible: ',bg='white').pack(pady=(0, 0))
 img_lab_camino = tk.PhotoImage(file="img/camino_lab.PNG")

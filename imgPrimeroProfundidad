@@ -1,49 +1,45 @@
 digraph {
 	"(9, 9)" -> "(9, 8)"
-	"(9, 9)" [fillcolor=blue style=filled]
+	"(9, 9)" [fillcolor="#9932CC" style=filled]
 	"(9, 8)" [fillcolor=green style=filled]
 	"(9, 8)" -> "(8, 8)"
 	"(8, 8)" [fillcolor=green style=filled]
 	"(8, 8)" -> "(7, 8)"
+	"(7, 8)" [fillcolor=green style=filled]
 	"(7, 8)" -> "(6, 8)"
+	"(6, 8)" [fillcolor=green style=filled]
 	"(6, 8)" -> "(5, 8)"
+	"(5, 8)" [fillcolor=green style=filled]
 	"(5, 8)" -> "(4, 8)"
-	"(8, 8)" -> "(8, 7)"
-	"(8, 7)" [fillcolor=green style=filled]
-	"(8, 7)" -> "(8, 6)"
-	"(8, 6)" [fillcolor=green style=filled]
-	"(8, 6)" -> "(7, 6)"
-	"(7, 6)" [fillcolor=green style=filled]
-	"(7, 6)" -> "(6, 6)"
-	"(6, 6)" [fillcolor=green style=filled]
-	"(6, 6)" -> "(6, 5)"
-	"(6, 5)" [fillcolor=green style=filled]
-	"(6, 5)" -> "(5, 5)"
-	"(5, 5)" [fillcolor=green style=filled]
-	"(5, 5)" -> "(4, 5)"
-	"(4, 5)" [fillcolor=green style=filled]
-	"(4, 5)" -> "(4, 6)"
+	"(4, 8)" [fillcolor=green style=filled]
+	"(4, 8)" -> "(4, 7)"
+	"(4, 7)" [fillcolor=green style=filled]
+	"(4, 7)" -> "(3, 7)"
+	"(3, 7)" -> "(2, 7)"
+	"(2, 7)" -> "(1, 7)"
+	"(2, 7)" -> "(2, 8)"
+	"(4, 7)" -> "(4, 6)"
 	"(4, 6)" [fillcolor=green style=filled]
-	"(4, 6)" -> "(3, 6)"
-	"(3, 6)" [fillcolor=green style=filled]
-	"(3, 6)" -> "(2, 6)"
-	"(2, 6)" [fillcolor=green style=filled]
-	"(2, 6)" -> "(1, 6)"
-	"(1, 6)" [fillcolor=green style=filled]
-	"(1, 6)" -> "(1, 5)"
-	"(1, 5)" [fillcolor=green style=filled]
-	"(1, 5)" -> "(1, 4)"
-	"(1, 4)" [fillcolor=green style=filled]
-	"(1, 4)" -> "(2, 4)"
-	"(1, 4)" -> "(1, 3)"
-	"(1, 3)" [fillcolor=green style=filled]
-	"(1, 3)" -> "(1, 2)"
-	"(1, 2)" [fillcolor=green style=filled]
-	"(1, 2)" -> "(1, 1)"
+	"(4, 6)" -> "(4, 5)"
+	"(4, 5)" [fillcolor=green style=filled]
+	"(4, 5)" -> "(3, 5)"
+	"(3, 5)" [fillcolor=green style=filled]
+	"(3, 5)" -> "(2, 5)"
+	"(2, 5)" [fillcolor=green style=filled]
+	"(2, 5)" -> "(2, 4)"
+	"(2, 4)" [fillcolor=green style=filled]
+	"(2, 4)" -> "(1, 4)"
+	"(2, 4)" -> "(2, 3)"
+	"(2, 3)" [fillcolor=green style=filled]
+	"(2, 3)" -> "(2, 2)"
+	"(2, 2)" [fillcolor=green style=filled]
+	"(2, 2)" -> "(2, 1)"
+	"(2, 1)" [fillcolor=green style=filled]
+	"(2, 1)" -> "(1, 1)"
 	"(1, 1)" [fillcolor=green style=filled]
 	"(1, 1)" -> "(0, 1)"
 	"(0, 1)" [fillcolor=green style=filled]
 	"(0, 1)" -> "(0, 0)"
 	"(0, 0)" [fillcolor=green style=filled]
-	"(0, 0)" [fillcolor=green style=filled]
+	"(0, 0)" [fillcolor="#FF00FF" style=filled]
 }
