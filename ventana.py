@@ -1,10 +1,11 @@
 import tkinter as tk
-from PrimeroAmplitud import *
+from AlgoritmosBusqueda import *
 from PIL import Image, ImageDraw, ImageFont, ImageTk
 from networkx.drawing.nx_agraph import graphviz_layout
 import screeninfo
 import os
 
+#Genera el laberinto y arbol dependiendo el algoritmo seleccionado
 def generar_laberinto_y_arbol(matriz,algoritmo,sentido):
     if algoritmo:
         arbolBusqueda, por_visitar, texto= primeroProfundidad(matriz,sentido)
@@ -12,6 +13,7 @@ def generar_laberinto_y_arbol(matriz,algoritmo,sentido):
         arbolBusqueda, por_visitar, texto= primeroAmplitud(matriz,sentido)
     return arbolBusqueda, por_visitar, texto
 
+#Genera el arbol recorrido por el algoritmo seleccionado
 def generarArbol(arbolBusqueda,por_visitar,algoritmo):
     g = Graph(engine='sfdp')
     g = graphviz.Digraph(format='png')
@@ -31,7 +33,7 @@ def generarArbol(arbolBusqueda,por_visitar,algoritmo):
     else:
         g.render('imgPrimeroAmplitud')
 
-
+#Genera la visualizacion del arbol junto con los pasos
 def mostrar_arbol(matriz, algoritmo, sentido):
     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz, algoritmo, sentido)
     generarArbol(arbolBusqueda, por_visitar, algoritmo)
@@ -88,7 +90,7 @@ def mostrar_arbol(matriz, algoritmo, sentido):
         widget_texto.insert("end", linea + "\n")
 
 
-
+#Muestra los pasos seguidos en la busqueda del camino solucion
 def mostrarPasos(matriz,algoritmo,sentido):
     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo,sentido)
     ventana = Tk()
@@ -108,34 +110,7 @@ def mostrarPasos(matriz,algoritmo,sentido):
 
 imagen_tk = None
 
-#no se utiliza!!
-# def mostrarLaberintoSolucion(matriz,algoritmo,sentido):
-#     global imagen_tk
-#     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz, algoritmo,sentido)
-#     size = (len(matriz[0]) * 40, len(matriz) * 40)
-#     imagen = Image.new('RGB', size, color=(0, 0, 0))
-#     draw = ImageDraw.Draw(imagen)
-#     font_size = 32
-#     font = ImageFont.truetype("arial.ttf", font_size)
-#     cuadro_size = 40
-
-#     for i in range(len(matriz)):
-#         for j in range(len(matriz[0])):
-#             if matriz[i][j] == 'x':
-#                 draw.text((j*cuadro_size, i*cuadro_size), 'x', font=font, fill=(255, 0, 0), stroke_width=1, stroke_fill=(255, 0, 0))
-#             elif matriz[i][j] == '0':
-#                 draw.text((j*cuadro_size, i*cuadro_size), '0', font=font, fill=(0, 255, 0))
-#             elif matriz[i][j] == 'F':
-#                 draw.text((j*cuadro_size, i*cuadro_size), 'F', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
-#             elif matriz[i][j] == 'I':
-#                 draw.text((j*cuadro_size, i*cuadro_size), 'I', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
-#             if (nodo(i, j) in por_visitar and nodo(i,j)!=nodo(0,0)and nodo(i,j)!=nodo(9,9)):
-#                draw.text((j*cuadro_size, i*cuadro_size), '//', font=font, fill=(255, 255, 0), stroke_width=2,stroke_fill=(255, 255, 0))
-
-#     if (algoritmo == 0): imagen.save("PA.png")
-#     else: imagen.save("PP.png")
-
-
+#Genera la visualizacion del laberinto y marca su camino solucion segun el aloritmo utilizado
 def dibujarLaberintoSolucion(matriz,algoritmo,sentido):
     global imagen_tk
     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz, algoritmo,sentido)

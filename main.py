@@ -2,35 +2,10 @@ from Genlab import *
 from PIL import Image, ImageDraw, ImageFont, ImageTk
 import tkinter as tk
 import screeninfo
-from ventanaPA import *
+from ventana import *
 from tkinter import ttk
 
-
-#no se utiliza!! 
-# def mostrar_matriz(matriz):
-#     size = (len(matriz[0])*20, len(matriz)*20)
-#     # size = (200,200)
-#     imagen = Image.new('RGB', size, color=(0, 0, 0))
-#     # imagen = imagen.resize((300,300), resample=Image.BICUBIC)
-#     draw = ImageDraw.Draw(imagen)
-#     # font_size = 32
-#     font_size = 16
-#     font = ImageFont.truetype("arial.ttf", font_size)
-#     # cuadro_size = 40
-#     cuadro_size = 20
-#     for i in range(len(matriz)):
-#         for j in range(len(matriz[0])):
-#             if matriz[i][j] == 'x':
-#                 draw.text((j*cuadro_size, i*cuadro_size), 'x', font=font, fill=(255, 0, 0), stroke_width=1, stroke_fill=(255, 0, 0))
-#             elif matriz[i][j] == '0':
-#                 draw.text((j*cuadro_size, i*cuadro_size), '0', font=font, fill=(0, 255, 0))
-#             elif matriz[i][j] == 'F':
-#                 draw.text((j*cuadro_size, i*cuadro_size), 'F', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
-#             elif matriz[i][j] == 'I':
-#                 draw.text((j*cuadro_size, i*cuadro_size), 'I', font=font, fill=(0, 0, 255), stroke_width=2, stroke_fill=(0, 0, 255))
-#     # Guarda la imagen 
-#     imagen.save("temp.png")
-
+#Genera la visualizacion del laberinto en pantalla
 def dibujar_laberinto(laberinto):
     alto = len(laberinto)
     ancho = len(laberinto[0])
@@ -53,15 +28,15 @@ def dibujar_laberinto(laberinto):
                 draw.rectangle((x1, y1, x2, y2), fill=(0, 0, 0))
             elif celda == '0':  #espacio libre
                 draw.rectangle((x1, y1, x2, y2), fill=(255, 250, 205))
-            elif celda == 'F': 
-                draw.rectangle((x1, y1, x2, y2), fill=(255, 0, 255)) #final
-            elif celda == 'I': 
-                draw.rectangle((x1, y1, x2, y2), fill=(153, 50, 204)) #inicio
+            elif celda == 'F': #final
+                draw.rectangle((x1, y1, x2, y2), fill=(255, 0, 255)) 
+            elif celda == 'I': #inicio
+                draw.rectangle((x1, y1, x2, y2), fill=(153, 50, 204)) 
             draw.line([(x1, y1), (x2, y1), (x2, y2), (x1, y2), (x1, y1)], fill=(0, 0, 0), width=1)
 
     imagen.save("temp.png")
 
-
+#Generacion del laberinto inicial
 matriz = generateMaze()
 height = 10
 width = 10
@@ -71,14 +46,9 @@ dibujar_laberinto(matriz)
 ventana = tk.Tk()
 screen = screeninfo.get_monitors()[0]
 width, height = screen.width, screen.height
-# width = ventana.winfo_screenwidth()
-# height = ventana.winfo_screenheight()
-# x = (width - ventana.winfo_reqwidth()) // 2
-# y = (height - ventana.winfo_reqheight()) // 2
 
 # Establecer las dimensiones de la ventana principal
 ventana.geometry("%dx%d" % (width, height))
-# ventana.geometry(f"{x}x{y}")
 ventana.title("Inteligencia Artificial 1")
 
 notebook = ttk.Notebook(ventana)
@@ -130,12 +100,14 @@ imagen = ImageTk.PhotoImage(Image.open("temp.png"))
 label_imagen = tk.Label(inicio_tab, image=imagen)
 label_imagen.pack(pady=20)
 
+#Controla el criterio del sentido de busqueda
 def seleccionarSentido():
     if opcion.get() == 1:
         print("Opción 1 seleccionada")
     elif opcion.get() == 2:
         print("Opción 2 seleccionada")
 
+#Invoca a la generacion de un nuevo laberinto
 def nuevoLaberinto():
     print("Generando nuevo laberinto...")
     global matriz 
@@ -145,14 +117,17 @@ def nuevoLaberinto():
     label_imagen.configure(image=imagen)
     label_imagen.image = imagen  
 
+#Invoca a la visualizacion del arbol dependiendo del algoritmo elegido
 def mostrarArbol(alg):
     global matriz
     mostrar_arbol(matriz,alg, opcion.get())
 
+#Invoca a la visualizacion del laberinto dependiendo del algoritmo elegido
 def mostrar_Pasos(alg):
     global matriz
     mostrarPasos(matriz,alg,opcion.get())
 
+#Funcion para comparar/visualizar los arboles generados con distintos algoritmos
 def compararArboles():
     global matriz
     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,0,opcion.get())
@@ -188,7 +163,7 @@ def compararArboles():
 
     ventanaArboles.mainloop()
 
-
+#Funcion para mostrar los laberintos, individualmente o la comparacion, segun el boton que presione
 def mostrar_Laberinto(algoritmo):
     global matriz, imgLaberinto, imgLaberintoPP
     ventanaLaberinto = tk.Toplevel(ventana)
@@ -293,7 +268,7 @@ tk.Button(frame_comparaciones, text='Comparar laberintos solución',command=lamb
 #Contenido de la solapa "Ayuda"
 tk.Label(ayuda_tab, text='REFERENCIAS',font=("Arial", 14)).pack()
 
-#Frame en Ayuda de Laberinto
+#Frame de REFERENCIAS en Ayuda de Laberinto
 frame_ref_laberinto = tk.LabelFrame(ayuda_tab, text='Sobre el LABERINTO: ', font=("Arial", 14))
 frame_ref_laberinto.configure(bg='white')
 frame_ref_laberinto.pack(side='left', padx=10, pady=10, fill='x', expand=True)
@@ -318,7 +293,11 @@ tk.Label(frame_ref_laberinto, text='Lugar bloqueado: ',bg='white').pack(pady=(0,
 img_lab_bloqueado = tk.PhotoImage(file="img/bloqueado_lab.PNG")
 tk.Label(frame_ref_laberinto, image=img_lab_bloqueado).pack()
 
-#Frame en Ayuda de los Árboles
+tk.Label(frame_ref_laberinto, text='Camino solucion: ',bg='white').pack(pady=(0, 0))
+img_lab_solucion = tk.PhotoImage(file="img/camino_recorrido.PNG")
+tk.Label(frame_ref_laberinto, image=img_lab_solucion).pack()
+
+#Frame de REFERENCIAS en Ayuda de los Árboles
 frame_ref_arbol = tk.LabelFrame(ayuda_tab, text='Sobre los ÁRBOLES: ', font=("Arial", 14))
 frame_ref_arbol.configure(bg='white')
 frame_ref_arbol.pack(side='left', padx=10, pady=10, fill='x', expand=True)
@@ -339,6 +318,7 @@ tk.Label(frame_ref_arbol, text='Nodo expandido y camino solución: ',bg='white')
 img_arb_solucion = tk.PhotoImage(file="img/solucion_arb.PNG")
 tk.Label(frame_ref_arbol, image=img_arb_solucion).pack()
 
+#Funcion para poder actualizar las imagnes cuando se generan nuevos laberintos
 def eliminar_imagen():
     if os.path.exists("imgPrimeroAmplitud.png"):
         os.remove("imgPrimeroAmplitud.png")
