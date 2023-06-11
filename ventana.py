@@ -114,6 +114,7 @@ imagen_tk = None
 def dibujarLaberintoSolucion(matriz,algoritmo,sentido):
     global imagen_tk
     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz, algoritmo,sentido)
+    nodosArbol = obtener_nodos(arbolBusqueda)
     alto = len(matriz)
     ancho = len(matriz[0])
     tamano_celda = 20
@@ -137,7 +138,10 @@ def dibujarLaberintoSolucion(matriz,algoritmo,sentido):
                 if nodo(fila, columna) in por_visitar:
                     draw.rectangle((x1, y1, x2, y2), fill=(0, 255, 0))  # Color para por_visitar
                 else:
-                    draw.rectangle((x1, y1, x2, y2), fill=(255, 250, 205))
+                    if nodo(fila, columna) in nodosArbol:
+                        draw.rectangle((x1, y1, x2, y2), fill= (255, 255, 0))
+                    else: 
+                        draw.rectangle((x1, y1, x2, y2), fill= (255, 250, 205))
             elif celda == 'F': 
                 draw.rectangle((x1, y1, x2, y2), fill=(255, 0, 255)) #final
             elif celda == 'I': 
@@ -148,4 +152,9 @@ def dibujarLaberintoSolucion(matriz,algoritmo,sentido):
     if (algoritmo == 0): imagen.save("PA.png")
     else: imagen.save("PP.png")
 
+def obtener_nodos(arbolBusqueda):
+    nodos = []
+    for nodo in arbolBusqueda:
+        nodos.append(nodo.hijo)
+    return nodos
 

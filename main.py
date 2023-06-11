@@ -294,7 +294,11 @@ img_lab_bloqueado = tk.PhotoImage(file="img/bloqueado_lab.PNG")
 tk.Label(frame_ref_laberinto, image=img_lab_bloqueado).pack()
 
 tk.Label(frame_ref_laberinto, text='Camino solucion: ',bg='white').pack(pady=(0, 0))
-img_lab_solucion = tk.PhotoImage(file="img/camino_recorrido.PNG")
+img_lab_solucion = tk.PhotoImage(file="img\camino_recorrido.PNG") 
+tk.Label(frame_ref_laberinto, image=img_lab_solucion).pack()
+
+tk.Label(frame_ref_laberinto, text='Posicion visitada: ',bg='white').pack(pady=(0, 0))
+img_lab_solucion = tk.PhotoImage(file="img/nodo_expandido.PNG")
 tk.Label(frame_ref_laberinto, image=img_lab_solucion).pack()
 
 #Frame de REFERENCIAS en Ayuda de los Árboles

@@ -12,30 +12,32 @@ digraph {
 	"(5, 8)" [fillcolor=green style=filled]
 	"(5, 8)" -> "(4, 8)"
 	"(4, 8)" [fillcolor=green style=filled]
-	"(4, 8)" -> "(4, 7)"
-	"(4, 7)" [fillcolor=green style=filled]
-	"(4, 7)" -> "(3, 7)"
-	"(3, 7)" -> "(2, 7)"
-	"(2, 7)" -> "(1, 7)"
-	"(2, 7)" -> "(2, 8)"
-	"(4, 7)" -> "(4, 6)"
-	"(4, 6)" [fillcolor=green style=filled]
-	"(4, 6)" -> "(4, 5)"
-	"(4, 5)" [fillcolor=green style=filled]
-	"(4, 5)" -> "(3, 5)"
-	"(3, 5)" [fillcolor=green style=filled]
-	"(3, 5)" -> "(2, 5)"
+	"(4, 8)" -> "(3, 8)"
+	"(3, 8)" [fillcolor=green style=filled]
+	"(3, 8)" -> "(2, 8)"
+	"(2, 8)" -> "(1, 8)"
+	"(3, 8)" -> "(3, 7)"
+	"(3, 7)" [fillcolor=green style=filled]
+	"(3, 7)" -> "(3, 6)"
+	"(3, 6)" [fillcolor=green style=filled]
+	"(3, 6)" -> "(2, 6)"
+	"(2, 6)" [fillcolor=green style=filled]
+	"(2, 6)" -> "(2, 5)"
 	"(2, 5)" [fillcolor=green style=filled]
+	"(2, 5)" -> "(1, 5)"
 	"(2, 5)" -> "(2, 4)"
 	"(2, 4)" [fillcolor=green style=filled]
-	"(2, 4)" -> "(1, 4)"
-	"(2, 4)" -> "(2, 3)"
-	"(2, 3)" [fillcolor=green style=filled]
-	"(2, 3)" -> "(2, 2)"
+	"(2, 4)" -> "(3, 4)"
+	"(3, 4)" [fillcolor=green style=filled]
+	"(3, 4)" -> "(3, 3)"
+	"(3, 3)" [fillcolor=green style=filled]
+	"(3, 3)" -> "(3, 2)"
+	"(3, 2)" [fillcolor=green style=filled]
+	"(3, 2)" -> "(2, 2)"
 	"(2, 2)" [fillcolor=green style=filled]
-	"(2, 2)" -> "(2, 1)"
-	"(2, 1)" [fillcolor=green style=filled]
-	"(2, 1)" -> "(1, 1)"
+	"(2, 2)" -> "(1, 2)"
+	"(1, 2)" [fillcolor=green style=filled]
+	"(1, 2)" -> "(1, 1)"
 	"(1, 1)" [fillcolor=green style=filled]
 	"(1, 1)" -> "(0, 1)"
 	"(0, 1)" [fillcolor=green style=filled]
