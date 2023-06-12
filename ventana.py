@@ -5,6 +5,23 @@ from networkx.drawing.nx_agraph import graphviz_layout
 import screeninfo
 import os
 
+#Controlar la apertura y cierre de ventanas
+ventanas_abiertas = {}
+def abrir_ventana(nombre_ventana):
+    if nombre_ventana not in ventanas_abiertas:
+        ventana_sec = tk.Toplevel()
+        ventanas_abiertas[nombre_ventana] = ventana_sec
+        ventana_sec.protocol("WM_DELETE_WINDOW", lambda: cerrar_ventana(nombre_ventana))
+        return ventana_sec
+    else:
+        ventana_sec = ventanas_abiertas[nombre_ventana]
+        ventana_sec.lift()
+
+def cerrar_ventana(nombre_ventana):
+    ventana = ventanas_abiertas.pop(nombre_ventana, None)
+    if ventana is not None:
+        ventana.destroy()
+
 #Genera el laberinto y arbol dependiendo el algoritmo seleccionado
 def generar_laberinto_y_arbol(matriz,algoritmo,sentido):
     if algoritmo:
@@ -49,10 +66,12 @@ def mostrar_arbol(matriz, algoritmo, sentido):
         img = ImageTk.PhotoImage(img)
 
     
-    ventana = tk.Toplevel()
+    # ventana = tk.Toplevel()
     if algoritmo:
+        ventana = abrir_ventana("A_PP") #Arbol Primero Profundidad
         ventana.title("ALGORITMO PRIMERO PROFUNDIDAD")
     else:
+        ventana = abrir_ventana("A_PA") #Arbol Primero Amplitud
         ventana.title("ALGORITMO PRIMERO AMPLITUD")
 
     canvas = tk.Canvas(ventana, width=700, height=700)
@@ -93,10 +112,12 @@ def mostrar_arbol(matriz, algoritmo, sentido):
 #Muestra los pasos seguidos en la busqueda del camino solucion
 def mostrarPasos(matriz,algoritmo,sentido):
     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,algoritmo,sentido)
-    ventana = Tk()
+    # ventana = Tk()
     if (algoritmo == 0):
+        ventana = abrir_ventana("P_PA") #Pasos Primero Amplitud
         ventana.title("PASOS: PRIMERO AMPLITUD")
-    else: 
+    else:
+        ventana = abrir_ventana("P_PP") #Pasos Primero Profundidad
         ventana.title("PASOS: PRIMERO PROFUNDIDAD")
     widget_texto = Text(ventana, height=30, width=50, state="disabled")
     widget_texto.pack()
@@ -123,6 +144,7 @@ def dibujarLaberintoSolucion(matriz,algoritmo,sentido):
 
     imagen = Image.new("RGB", (ancho_imagen, alto_imagen), color=(255, 255, 255))
     draw = ImageDraw.Draw(imagen)
+    fuente = ImageFont.truetype("arial.ttf", 12)
 
     for fila in range(alto):
         for columna in range(ancho):
@@ -132,7 +154,23 @@ def dibujarLaberintoSolucion(matriz,algoritmo,sentido):
             x2 = x1 + tamano_celda
             y2 = y1 + tamano_celda
 
-            if celda == 'x':  # Pared
+            if fila == 10:
+                draw.rectangle((x1, y1, x2, y2), fill=(0, 0, 0))
+                bbox = draw.textbbox((x1, y1), celda, font=fuente)
+                ancho_texto = bbox[2] - bbox[0]
+                alto_texto = bbox[3] - bbox[1]
+                x_texto = (x1 + x2 - ancho_texto) // 2
+                y_texto = (y1 + y2 - alto_texto) // 2
+                draw.text((x_texto, y_texto), celda, font=fuente, fill=(255, 255, 255))
+            elif columna == 10:
+                draw.rectangle((x1, y1, x2, y2), fill=(0, 0, 0))
+                bbox = draw.textbbox((x1, y1), celda, font=fuente)
+                ancho_texto = bbox[2] - bbox[0]
+                alto_texto = bbox[3] - bbox[1]
+                x_texto = (x1 + x2 - ancho_texto) // 2
+                y_texto = (y1 + y2 - alto_texto) // 2
+                draw.text((x_texto, y_texto), celda, font=fuente, fill=(255, 255, 255))
+            elif celda == 'x':  # Pared
                 draw.rectangle((x1, y1, x2, y2), fill=(0, 0, 0))
             elif celda == '0':  # Espacio libre
                 if nodo(fila, columna) in por_visitar:

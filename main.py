@@ -7,24 +7,53 @@ from tkinter import ttk
 
 #Genera la visualizacion del laberinto en pantalla
 def dibujar_laberinto(laberinto):
-    alto = len(laberinto)
-    ancho = len(laberinto[0])
+    imgLab = laberinto
+    posicionesColumnas = ['0','1','2','3','4','5','6','7','8','9']
+    posicionesFilas = ['0','1','2','3','4','5','6','7','8','9','']
+    imgLab.append(posicionesColumnas)
+    for fila in imgLab:
+        indice = imgLab.index(fila)
+        fila.append(posicionesFilas[indice])
+        # indice = imgLab.index(fila)
+        # fila.insert(0,posicionesFilas[indice])
+
+    alto = len(imgLab)
+    ancho = len(imgLab[0])
     tamano_celda = 20  
     alto_imagen = alto * tamano_celda + 1
     ancho_imagen = ancho * tamano_celda + 1
 
     imagen = Image.new("RGB", (ancho_imagen, alto_imagen), color=(255, 255, 255))
     draw = ImageDraw.Draw(imagen)
+    fuente = ImageFont.truetype("arial.ttf", 12)
 
     for fila in range(alto):
         for columna in range(ancho):
-            celda = laberinto[fila][columna]
+            celda = imgLab[fila][columna]
             x1 = columna * tamano_celda
             y1 = fila * tamano_celda
             x2 = x1 + tamano_celda
             y2 = y1 + tamano_celda
 
-            if celda == 'x':  #pared
+            if fila == 10:
+                draw.rectangle((x1, y1, x2, y2), fill=(0, 0, 0))
+                # ancho_texto, alto_texto = draw.textbbox((x1, y1), celda, font=fuente)
+                bbox = draw.textbbox((x1, y1), celda, font=fuente)
+                ancho_texto = bbox[2] - bbox[0]
+                alto_texto = bbox[3] - bbox[1]
+                x_texto = (x1 + x2 - ancho_texto) // 2
+                y_texto = (y1 + y2 - alto_texto) // 2
+                draw.text((x_texto, y_texto), celda, font=fuente, fill=(255, 255, 255))
+            elif columna == 10:
+                draw.rectangle((x1, y1, x2, y2), fill=(0, 0, 0))
+                # ancho_texto, alto_texto = draw.textsize(celda, font=fuente)
+                bbox = draw.textbbox((x1, y1), celda, font=fuente)
+                ancho_texto = bbox[2] - bbox[0]
+                alto_texto = bbox[3] - bbox[1]
+                x_texto = (x1 + x2 - ancho_texto) // 2
+                y_texto = (y1 + y2 - alto_texto) // 2
+                draw.text((x_texto, y_texto), celda, font=fuente, fill=(255, 255, 255))
+            elif celda == 'x':  #pared
                 draw.rectangle((x1, y1, x2, y2), fill=(0, 0, 0))
             elif celda == '0':  #espacio libre
                 draw.rectangle((x1, y1, x2, y2), fill=(255, 250, 205))
@@ -49,6 +78,7 @@ width, height = screen.width, screen.height
 
 # Establecer las dimensiones de la ventana principal
 ventana.geometry("%dx%d" % (width, height))
+ventana.state("zoomed")
 ventana.title("Inteligencia Artificial 1")
 
 notebook = ttk.Notebook(ventana)
@@ -134,7 +164,8 @@ def compararArboles():
     generarArbol(arbolBusqueda,por_visitar,0)
     arbolBusqueda, por_visitar, texto = generar_laberinto_y_arbol(matriz,1,opcion.get())
     generarArbol(arbolBusqueda,por_visitar,1)
-    ventanaArboles = tk.Toplevel(ventana)
+    # ventanaArboles = tk.Toplevel(ventana)
+    ventanaArboles = abrir_ventana("C_Arb") #Ventana abierta de Comparación de Árboles identificada como C_Arb
     ventanaArboles.title("ARBOLES")
     
     contenedorArbol = tk.Frame(ventanaArboles)
@@ -166,7 +197,9 @@ def compararArboles():
 #Funcion para mostrar los laberintos, individualmente o la comparacion, segun el boton que presione
 def mostrar_Laberinto(algoritmo):
     global matriz, imgLaberinto, imgLaberintoPP
-    ventanaLaberinto = tk.Toplevel(ventana)
+    # ventanaLaberinto = tk.Toplevel(ventana)
+    LabAlg = "Lab"+str(algoritmo) #Identificar la ventana de qué algoritmo se abrirá
+    ventanaLaberinto = abrir_ventana(LabAlg) #Ventana abierta del Laberinto identificada como Lab+algoritmo
     ventanaLaberinto.title("LABERINTO")
     
     contenedor = tk.Frame(ventanaLaberinto)
@@ -198,19 +231,19 @@ def mostrar_Laberinto(algoritmo):
         dibujarLaberintoSolucion(matriz, 0,opcion.get())
         dibujarLaberintoSolucion(matriz, 1,opcion.get())
         ventanaLaberinto.title("COMPARAR ALGORITMOS")
-        imgLaberinto = ImageTk.PhotoImage(Image.open("PA.png"))
+        imgLaberintoComp = ImageTk.PhotoImage(Image.open("PA.png"))
         frame_izquierdo = tk.Frame(contenedor)
         frame_izquierdo.grid(row=0, column=0, padx=10, pady=10)
-        label_imagen = tk.Label(frame_izquierdo, image=imgLaberinto)
+        label_imagen = tk.Label(frame_izquierdo, image=imgLaberintoComp)
         label_imagen.pack()
 
         titulo_izquierdo = tk.Label(frame_izquierdo, text="Laberinto Algoritmo Primero Amplitud", font=("Arial", 14))
         titulo_izquierdo.pack(pady=10)
 
-        imgLaberintoPP = ImageTk.PhotoImage(Image.open("PP.png"))
+        imgLaberintoPPComp = ImageTk.PhotoImage(Image.open("PP.png"))
         frame_derecho = tk.Frame(contenedor)
         frame_derecho.grid(row=0, column=1, padx=10, pady=10)
-        label_imagen2 = tk.Label(frame_derecho, image=imgLaberintoPP)
+        label_imagen2 = tk.Label(frame_derecho, image=imgLaberintoPPComp)
         label_imagen2.pack()
 
         titulo_derecho = tk.Label(frame_derecho, text="Laberinto Algoritmo Primero Profundidad", font=("Arial", 14))
