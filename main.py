@@ -189,6 +189,12 @@ def compararArboles():
     label_imagen2 = tk.Label(frame_der, image=arbolPP)
     label_imagen2.pack()
 
+    imgLabRef = ImageTk.PhotoImage(Image.open("img/ref_arbol.png"))
+    frame_ref = tk.Frame(contenedorArbol)
+    frame_ref.grid(row=0, column=2, padx=10, pady=10)
+    label_imagen = tk.Label(frame_ref, image=imgLabRef)
+    label_imagen.pack()
+
     titulo_derecho = tk.Label(frame_der, text="Árbol Algoritmo Primero Profundidad", font=("Arial", 14))
     titulo_derecho.pack(pady=10)
 
@@ -213,6 +219,11 @@ def mostrar_Laberinto(algoritmo):
         frame_izquierdo.pack(side="left", padx=10, pady=10)
         label_imagen = tk.Label(frame_izquierdo, image=imgLaberinto)
         label_imagen.pack()
+        imgLabRef = ImageTk.PhotoImage(Image.open("img/ref_laberinto.png"))
+        frame_ref = tk.Frame(contenedor)
+        frame_ref.pack(side="right", padx=10, pady=10)
+        label_imagen = tk.Label(frame_ref, image=imgLabRef)
+        label_imagen.pack()
 
         titulo_izquierdo = tk.Label(frame_izquierdo, text="Laberinto Algoritmo Primero Amplitud", font=("Arial", 14))
         titulo_izquierdo.pack(pady=10)
@@ -221,8 +232,13 @@ def mostrar_Laberinto(algoritmo):
         ventanaLaberinto.title("LABERINTO: PRIMERO PROFUNDIDAD")
         imgLaberintoPP = ImageTk.PhotoImage(Image.open("PP.png"))
         frame_derecho = tk.Frame(contenedor)
-        frame_derecho.pack(side="right", padx=10, pady=10)
+        frame_derecho.pack(side="left", padx=10, pady=10)
         label_imagen = tk.Label(frame_derecho, image=imgLaberintoPP)
+        label_imagen.pack()
+        imgLabRef = ImageTk.PhotoImage(Image.open("img/ref_laberinto.png"))
+        frame_ref = tk.Frame(contenedor)
+        frame_ref.pack(side="right", padx=10, pady=10)
+        label_imagen = tk.Label(frame_ref, image=imgLabRef)
         label_imagen.pack()
 
         titulo_derecho = tk.Label(frame_derecho, text="Laberinto Algoritmo Primero Profundidad", font=("Arial", 14))
@@ -248,6 +264,12 @@ def mostrar_Laberinto(algoritmo):
 
         titulo_derecho = tk.Label(frame_derecho, text="Laberinto Algoritmo Primero Profundidad", font=("Arial", 14))
         titulo_derecho.pack(pady=10)
+
+        imgLabRef = ImageTk.PhotoImage(Image.open("img/ref_laberinto.png"))
+        frame_ref = tk.Frame(contenedor)
+        frame_ref.grid(row=0, column=3, padx=10, pady=10)
+        label_imagen = tk.Label(frame_ref, image=imgLabRef)
+        label_imagen.pack()
 
     ventanaLaberinto.mainloop()
 
